@@ -32,6 +32,9 @@ export default function App() {
   const [obj, setObj] = useState([]);
   const [currentObj, setCurrentObj] = useState({});
 
+    let frame = 0;
+    const frameRate = 60;
+
   const { width, height } = Dimensions.get("window");
 
   const textureDims =
@@ -65,6 +68,7 @@ export default function App() {
   const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
     const loop = async () => {
       if (net) {
+        if(frame % frameRate === 0){
         const nextImageTensor = images.next().value;
         if (nextImageTensor) {
           const objects = await net.classify(nextImageTensor);
@@ -74,6 +78,9 @@ export default function App() {
           // objects.map(object => object.className)
           tf.dispose([nextImageTensor]);
         }
+      }
+      frame += 1;
+      frame = frame % frameRate;
       }
       requestAnimationFrame(loop);
     }
