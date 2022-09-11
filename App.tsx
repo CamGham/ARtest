@@ -136,7 +136,8 @@ export default function App() {
       await tf.ready();
       tf.getBackend();
       // setModel(await cocoSsd.load());
-      setNet(await mobilenet.load());
+      // setNet(await mobilenet.load());
+      setNet(await mobilenet.load({version: 1, alpha: 0.25}));
       console.log("Model loaded");
 
       setObj([]);
